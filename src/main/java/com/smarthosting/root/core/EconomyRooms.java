@@ -35,6 +35,7 @@ public class EconomyRooms implements Rooms {
             economyPriceList = standardEnconomyAllocation(sortedPrice, availableEconomyRooms);
         }
 
+        //Populate total number of occupied Premium Rooms and total amount realized
         occupied = economyPriceList.size();
         totalPayment = economyPriceList.stream().mapToInt(Integer::intValue).sum();
 
