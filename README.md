@@ -16,13 +16,36 @@ java -jar root-<Version(eg 1.0.3)>-SNAPSHOT.jar
 
 Spring Boot service should start up, once startup is completed copy this link http://localhost:8179/api/occupancy to a restful test tool of your choice. Personally i use Postman 
 
-The format for testing is using JSON an example of this test can be seen below
+Use this Json format for a simple test
+
 {
 "availablePremiumRooms":8,
 "availableEconomyRooms":1
 }
 
-![alt text](https://raw.githubusercontent.com/adedamolaOA/ROOTServices/img/postman_sample.PNG)
+User this Json format for bulk test
 
+[
+	{
+		"availablePremiumRooms":3,
+		"availableEconomyRooms":3
+	},
+	{
+		"availablePremiumRooms":7,
+		"availableEconomyRooms":5
+	},
+	{
+		"availablePremiumRooms":2,
+		"availableEconomyRooms":7
+	},
+	{
+		"availablePremiumRooms":7,
+		"availableEconomyRooms":1
+	}
+]
+
+![postman_sample](https://raw.githubusercontent.com/adedamolaOA/ROOTServices/img/postman_sample.PNG)
+
+![postman_sample_bulk](https://raw.githubusercontent.com/adedamolaOA/ROOTServices/img/postman_sample_bulk.PNG)
 
  
