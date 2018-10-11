@@ -22,5 +22,7 @@ The format for testing is using JSON an example of this test can be seen below
 "availableEconomyRooms":1
 }
 
+![alt text](https://raw.githubusercontent.com/adedamolaOA/ROOTServices/img/postman_sample.PNG)
+
 
  
