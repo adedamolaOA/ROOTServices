@@ -1,9 +1,9 @@
 # ROOTServices
 
-Room Occupancy Optimization Tool (ROOT) is a Spring Boot based Restful Mircoservice design to optimize the process of selecting a
-room based on the available price offered by hotel customers.
+Room Occupancy Optimization Tool (ROOT) is a Spring Boot based Restful Mircoservice design to optimize the process of selecting a room based on the available price offered by hotel customers.
 
 Running ROOTservices
+
 To run ROOT you can either clone or download the source code, open it with Netbeans and perform unit tests by clicking on the class you wish to Test OR run the jar file which is located in target folder in this repository.
 
 To run ROOT's jar, open your the commmand prompt/line inferace (CMD)
@@ -43,9 +43,5 @@ User this Json format for bulk test
 		"availableEconomyRooms":1
 	}
 ]
-
-![postman_sample](https://raw.githubusercontent.com/adedamolaOA/ROOTServices/img/postman_sample.PNG)
-
-![postman_sample_bulk](https://raw.githubusercontent.com/adedamolaOA/ROOTServices/img/postman_sample_bulk.PNG)
 
  
