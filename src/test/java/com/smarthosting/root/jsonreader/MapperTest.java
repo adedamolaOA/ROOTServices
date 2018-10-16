@@ -13,21 +13,21 @@ import static org.junit.Assert.*;
  *
  * @author Adedamola
  */
-public class PaymentMapperTest {
+public class MapperTest {
     
-    public PaymentMapperTest() {
+    public MapperTest() {
     }
 
     /**
      * Test of readJson method, of class PaymentMapper.
      */
     /**
-     * Test of readJson method, of class PaymentMapper.
+     * Test of readJson method, of class Mapper.
      * @throws java.lang.Exception
      */
     @Test
     public void testReadJson() throws Exception {
-         PaymentMapper pfn = new PaymentMapper();
+         Mapper pfn = new Mapper();
         List<Integer> result = pfn.readJson();
         Integer[] test = {
             23,

@@ -33,27 +33,7 @@ public class OccupancyController {
     @PostMapping("/occupancy")
     public OccupancyResponse getOccupancyState(@RequestBody OccupancyRequest data) {
 
-        OccupancyResponse respOccupancy = new OccupancyResponse();
-        try {
-            //Log Free Premium rooms and Free Economy rooms
-            logger.info("Free Premium rooms: " + data.getAvailablePremiumRooms());
-            logger.info("Free Economy rooms: " + data.getAvailableEconomyRooms());
-
-            OccupancyState occupancyState = new OccupancyState(data.getAvailablePremiumRooms(), data.getAvailableEconomyRooms());
-            //Log Results of Alogrithm
-            logger.info("Usage Premium: " + occupancyState.getPremiumOccupiedRooms() + "(EUR " + occupancyState.getPremiumTotalPrice() + ")");
-            logger.info("Usage Economy: " + occupancyState.getEconomyOccupiedRooms() + "(EUR " + occupancyState.getEconomyTotalPrice() + ")");
-
-            //Set Response values for the request
-            respOccupancy.setPremiumOccupiedRooms(occupancyState.getPremiumOccupiedRooms());
-            respOccupancy.setPremiumTotal(occupancyState.getPremiumTotalPrice());
-            respOccupancy.setEconomyOccuipedRooms(occupancyState.getEconomyOccupiedRooms());
-            respOccupancy.setEconomyTotal(occupancyState.getEconomyTotalPrice());
-
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-        return respOccupancy;
+        return getResponse(data);
 
     }
 
@@ -61,31 +41,34 @@ public class OccupancyController {
     public List<OccupancyResponse> getOccupancyStates(@RequestBody List<OccupancyRequest> data) {
 
         List<OccupancyResponse> respOccupancyList = new ArrayList<>();
-        try {
-            for (OccupancyRequest or : data) {
-                //Log Free Premium rooms and Free Economy rooms
-                logger.info("Free Premium rooms: " + or.getAvailablePremiumRooms());
-                logger.info("Free Economy rooms: " + or.getAvailableEconomyRooms());
 
-                OccupancyState occupancy = new OccupancyState(or.getAvailablePremiumRooms(), or.getAvailableEconomyRooms());
-                //Log Results of Alogrithm
-                logger.info("Usage Premium: " + occupancy.getPremiumOccupiedRooms() + "(EUR " + occupancy.getPremiumTotalPrice() + ")");
-                logger.info("Usage Economy: " + occupancy.getEconomyOccupiedRooms() + "(EUR " + occupancy.getEconomyTotalPrice() + ")");
+        data.forEach((or) -> {
+            respOccupancyList.add(getResponse(or));
+        });
 
-                OccupancyResponse respOccupancy = new OccupancyResponse();
-                //Set Response values for the request
-                respOccupancy.setPremiumOccupiedRooms(occupancy.getPremiumOccupiedRooms());
-                respOccupancy.setPremiumTotal(occupancy.getPremiumTotalPrice());
-                respOccupancy.setEconomyOccuipedRooms(occupancy.getEconomyOccupiedRooms());
-                respOccupancy.setEconomyTotal(occupancy.getEconomyTotalPrice());
-                respOccupancyList.add(respOccupancy);
-            }
-
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
         return respOccupancyList;
 
+    }
+
+    public OccupancyResponse getResponse(OccupancyRequest data) {
+        OccupancyResponse respOccupancy = new OccupancyResponse();
+
+        //Log Free Premium rooms and Free Economy rooms
+        logger.info("Free Premium rooms: " + data.getAvailablePremiumRooms());
+        logger.info("Free Economy rooms: " + data.getAvailableEconomyRooms());
+
+        OccupancyState occupancyState = new OccupancyState(data.getAvailablePremiumRooms(), data.getAvailableEconomyRooms());
+        //Log Results of Alogrithm
+        logger.info("Usage Premium: " + occupancyState.getPremiumOccupiedRooms() + "(EUR " + occupancyState.getPremiumTotalPrice() + ")");
+        logger.info("Usage Economy: " + occupancyState.getEconomyOccupiedRooms() + "(EUR " + occupancyState.getEconomyTotalPrice() + ")");
+
+        //Set Response values for the request
+        respOccupancy.setPremiumOccupiedRooms(occupancyState.getPremiumOccupiedRooms());
+        respOccupancy.setPremiumTotal(occupancyState.getPremiumTotalPrice());
+        respOccupancy.setEconomyOccuipedRooms(occupancyState.getEconomyOccupiedRooms());
+        respOccupancy.setEconomyTotal(occupancyState.getEconomyTotalPrice());
+
+        return respOccupancy;
     }
 
 }

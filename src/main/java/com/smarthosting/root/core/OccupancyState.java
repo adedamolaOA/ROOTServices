@@ -5,9 +5,9 @@
  */
 package com.smarthosting.root.core;
 
-import com.smarthosting.root.jsonreader.PaymentMapper;
-import java.io.IOException;
-import java.util.Collections;
+import com.smarthosting.root.jsonreader.Mapper;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,49 +16,77 @@ import java.util.stream.Collectors;
  * @author Adedamola
  */
 public class OccupancyState {
-    
-    private final List<Integer> sortedEconomyPriceList;
-    private final List<Integer> sortedPremiumPriceList;
-    private List<Integer> priceList;
-    private final PremiumRooms premiumRooms;
-    private final EconomyRooms economyRooms;
 
-    public OccupancyState(Integer availablePremiumRooms, Integer availableEconomyRooms) throws IOException {
+    private int economyRoomOccuiped;
+    private int premiumRoomOccuiped;
+    private int economyRoomTotalMade;
+    private int premiumRoomTotalMade;
 
-        // Get the price list from the JSON File
-        getPriceList();
+    public OccupancyState(int availablePremiumRooms, int availableEconomyRooms) {
+        logic(availablePremiumRooms, availableEconomyRooms);
+    }
 
-        //Filter Economy Prices
-        sortedEconomyPriceList = priceList.stream().filter((i) -> (i < 100)).collect(Collectors.toList());
+    private void logic(int availablePremiumRooms, int availableEconomyRooms) {
+        List<Integer> economyList;
+        List<Integer> premiumList;
+        
+        //Get Customer Payment List
+        List<Integer> testArray = getPriceList();
 
-        //Filter Preium Prices
-        sortedPremiumPriceList = priceList.stream().filter((i) -> (i >= 100)).collect(Collectors.toList());
+        List<Integer> sortedEconomyPriceList = testArray.stream().filter(i -> i < 100).collect(Collectors.toList());
+        List<Integer> sortedPremiumPriceList = testArray.stream().filter(i -> i >= 100).collect(Collectors.toList());
+        if (availableEconomyRooms == 0) {
+            economyList = new ArrayList<>();
+            premiumList = testArray.stream().limit(availablePremiumRooms).collect(Collectors.toList());
+        } else if (availableEconomyRooms == 1 && availablePremiumRooms > sortedPremiumPriceList.size()) {
+            economyList = sortedEconomyPriceList.stream()
+                    .limit(availableEconomyRooms + (availablePremiumRooms - sortedPremiumPriceList.size()))
+                    .filter(i -> i < sortedEconomyPriceList.get((availablePremiumRooms - sortedPremiumPriceList.size()) - 1))
+                    .collect(Collectors.toList());
+            premiumList = testArray.stream()
+                    .limit(availablePremiumRooms)
+                    .collect(Collectors.toList());
+        } else {
+            economyList = sortedEconomyPriceList.stream()
+                    .limit(availableEconomyRooms)
+                    .collect(Collectors.toList());
+            premiumList = sortedPremiumPriceList.stream()
+                    .limit(availablePremiumRooms)
+                    .collect(Collectors.toList());
+        }
 
-        //Initializing Economy and Premium Class to get process the rooms
-        economyRooms = new EconomyRooms(sortedEconomyPriceList, sortedPremiumPriceList, availablePremiumRooms, availableEconomyRooms);
-        premiumRooms = new PremiumRooms(sortedPremiumPriceList, availablePremiumRooms);
+        // Get Rooms Allocated
+        premiumRoomOccuiped = premiumList.size();
+        economyRoomOccuiped = economyList.size();
+
+        // Get total Price
+        premiumRoomTotalMade = premiumList.stream().mapToInt(Integer::intValue).sum();
+        economyRoomTotalMade = economyList.stream().mapToInt(Integer::intValue).sum();
+
     }
 
     // Retrive Json and sort in desending order
-    private void getPriceList() throws IOException {
-        priceList = new PaymentMapper().readJson();
-        Collections.sort(priceList, new PriceComparator());
+    private List<Integer> getPriceList() {
+        List<Integer> priceList = new Mapper().readJson();
+        priceList.sort(Comparator.naturalOrder());
+        priceList.sort(Comparator.reverseOrder());
+        return priceList;
     }
 
     public Integer getPremiumOccupiedRooms() {
-        return premiumRooms.getOccupied();
+        return premiumRoomOccuiped;
     }
 
     public Integer getPremiumTotalPrice() {
-        return premiumRooms.getTotal();
+        return premiumRoomTotalMade;
     }
 
     public Integer getEconomyOccupiedRooms() {
-        return economyRooms.getOccupied();
+        return economyRoomOccuiped;
     }
 
     public Integer getEconomyTotalPrice() {
-        return economyRooms.getTotal();
+        return economyRoomTotalMade;
     }
-    
+
 }
