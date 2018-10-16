@@ -5,30 +5,38 @@
  */
 package com.smarthosting.root.models;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author Adedamola
  */
+@Setter @Getter
 public class OccupancyRequest {
 
     //Input parameters for the Restful service
-    private Integer availablePremiumRooms;
-    private Integer availableEconomyRooms;
+    private int availablePremiumRooms;
+    private int availableEconomyRooms;
 
-    //Getter and Setters for Available Rooms in Premium and Economy
-    public Integer getAvailablePremiumRooms() {
-        return availablePremiumRooms;
+    public void setAvailableEconomyRooms(int availableEconomyRooms) {
+        this.availableEconomyRooms = availableEconomyRooms;
     }
 
-    public Integer getAvailableEconomyRooms() {
+    public int getAvailableEconomyRooms() {
         return availableEconomyRooms;
     }
 
-    public void setAvailablePremiumRooms(Integer availablePremiumRooms) {
+    public void setAvailablePremiumRooms(int availablePremiumRooms) {
         this.availablePremiumRooms = availablePremiumRooms;
     }
 
-    public void setAvailableEconomyRooms(Integer availableEconomyRooms) {
-        this.availableEconomyRooms = availableEconomyRooms;
+    public int getAvailablePremiumRooms() {
+        return availablePremiumRooms;
     }
+    
+    
+
+    
 }

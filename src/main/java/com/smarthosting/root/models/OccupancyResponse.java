@@ -5,10 +5,14 @@
  */
 package com.smarthosting.root.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author Adedamola
  */
+@Setter @Getter
 public class OccupancyResponse {
 
     //Responses that will recieved by the RESTful service after a request
@@ -19,13 +23,6 @@ public class OccupancyResponse {
     private Integer economyTotal;
 
     //Getters and Setters for the responses
-    public Integer getPremiumOccupiedRooms() {
-        return premiumOccupiedRooms;
-    }
-
-    public Integer getPremiumTotal() {
-        return premiumTotal;
-    }
 
     public Integer getEconomyOccuipedRooms() {
         return economyOccuipedRooms;
@@ -35,12 +32,12 @@ public class OccupancyResponse {
         return economyTotal;
     }
 
-    public void setPremiumOccupiedRooms(Integer premiumOccupiedRooms) {
-        this.premiumOccupiedRooms = premiumOccupiedRooms;
+    public Integer getPremiumOccupiedRooms() {
+        return premiumOccupiedRooms;
     }
 
-    public void setPremiumTotal(Integer premiumTotal) {
-        this.premiumTotal = premiumTotal;
+    public Integer getPremiumTotal() {
+        return premiumTotal;
     }
 
     public void setEconomyOccuipedRooms(Integer economyOccuipedRooms) {
@@ -50,5 +47,16 @@ public class OccupancyResponse {
     public void setEconomyTotal(Integer economyTotal) {
         this.economyTotal = economyTotal;
     }
+
+    public void setPremiumOccupiedRooms(Integer premiumOccupiedRooms) {
+        this.premiumOccupiedRooms = premiumOccupiedRooms;
+    }
+
+    public void setPremiumTotal(Integer premiumTotal) {
+        this.premiumTotal = premiumTotal;
+    }
+    
+    
+   
 
 }
