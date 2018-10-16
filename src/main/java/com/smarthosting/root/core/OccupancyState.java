@@ -5,86 +5,70 @@
  */
 package com.smarthosting.root.core;
 
+import com.smarthosting.root.models.Occupancy;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.Getter;
 
 /**
  *
  * @author Adedamola
  */
-@Getter
-public class OccupancyState {
 
-    private int economyRoomOccuiped;
-    private int premiumRoomOccuiped;
-    private int economyRoomTotalMade;
-    private int premiumRoomTotalMade;
+public class OccupancyState extends Occupancy{
 
-    public OccupancyState(List<Integer> paymentList,int availablePremiumRooms, int availableEconomyRooms) {
-        logic(paymentList,availablePremiumRooms, availableEconomyRooms);
+    public void businessLogic(){
+        logic();
     }
 
-    private void logic(List<Integer> paymentList,int availablePremiumRooms, int availableEconomyRooms) {
+    // Business Logic for allocating rooms
+    private void logic() {
         List<Integer> economyList;
         List<Integer> premiumList;
         
-        //Get Customer Payment List
-        List<Integer> priceList = paymentList;
+        
+        int availablePremiumRoom = getAvailablePremiumRooms();
+        int availableEconomyRoom = getAvailableEconomyRooms();
+        
+        //Get Customer Payment List and sort
+        List<Integer> priceList = getPaymentList();
         priceList.sort(Comparator.naturalOrder());
         priceList.sort(Comparator.reverseOrder());
         
 
         List<Integer> sortedEconomyPriceList = priceList.stream().filter(i -> i < 100).collect(Collectors.toList());
         List<Integer> sortedPremiumPriceList = priceList.stream().filter(i -> i >= 100).collect(Collectors.toList());
-        if (availableEconomyRooms == 0) {
+        if (availableEconomyRoom == 0) {
             economyList = new ArrayList<>();
             premiumList = priceList.stream()
-                    .limit(availablePremiumRooms)
+                    .limit(availablePremiumRoom)
                     .collect(Collectors.toList());
-        } else if (availableEconomyRooms == 1 && availablePremiumRooms > sortedPremiumPriceList.size()) {
+        } else if (availableEconomyRoom == 1 && availablePremiumRoom > sortedPremiumPriceList.size()) {
             economyList = sortedEconomyPriceList.stream()
-                    .limit(availableEconomyRooms + (availablePremiumRooms - sortedPremiumPriceList.size()))
-                    .filter(i -> i < sortedEconomyPriceList.get((availablePremiumRooms - sortedPremiumPriceList.size()) - 1))
+                    .limit(availableEconomyRoom + (availablePremiumRoom - sortedPremiumPriceList.size()))
+                    .filter(i -> i < sortedEconomyPriceList.get((availablePremiumRoom - sortedPremiumPriceList.size()) - 1))
                     .collect(Collectors.toList());
             premiumList = priceList.stream()
-                    .limit(availablePremiumRooms)
+                    .limit(availablePremiumRoom)
                     .collect(Collectors.toList());
         } else {
             economyList = sortedEconomyPriceList.stream()
-                    .limit(availableEconomyRooms)
+                    .limit(availableEconomyRoom)
                     .collect(Collectors.toList());
             premiumList = sortedPremiumPriceList.stream()
-                    .limit(availablePremiumRooms)
+                    .limit(availablePremiumRoom)
                     .collect(Collectors.toList());
         }
 
         // Get Rooms Allocated
-        premiumRoomOccuiped = premiumList.size();
-        economyRoomOccuiped = economyList.size();
+        setPremiumRoomOccuiped(premiumList.size());
+        setEconomyRoomOccuiped(economyList.size());
 
         // Get total Price
-        premiumRoomTotalMade = premiumList.stream().mapToInt(Integer::intValue).sum();
-        economyRoomTotalMade = economyList.stream().mapToInt(Integer::intValue).sum();
+        setPremiumRoomTotalMade(premiumList.stream().mapToInt(Integer::intValue).sum());
+        setEconomyRoomTotalMade(economyList.stream().mapToInt(Integer::intValue).sum());
 
     }
-
-    public int getEconomyRoomOccuiped() {
-        return economyRoomOccuiped;
-    }
-
-    public int getEconomyRoomTotalMade() {
-        return economyRoomTotalMade;
-    }
-
-    public int getPremiumRoomOccuiped() {
-        return premiumRoomOccuiped;
-    }
-
-    public int getPremiumRoomTotalMade() {
-        return premiumRoomTotalMade;
-    }
-
+    
 }

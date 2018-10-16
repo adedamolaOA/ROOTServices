@@ -7,14 +7,12 @@ package com.smarthosting.root.controller;
 
 import com.smarthosting.root.core.OccupancyState;
 import com.smarthosting.root.jsonreader.Mapper;
-import com.smarthosting.root.models.OccupancyRequest;
-import com.smarthosting.root.models.OccupancyResponse;
-import java.io.IOException;
+import com.smarthosting.root.payload.OccupancyRequest;
+import com.smarthosting.root.payload.OccupancyResponse;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,9 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 public class OccupancyController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-   
-    private final Mapper mapper = new Mapper();
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());   
+    private final Mapper mapper = new Mapper();    
+    private final OccupancyState occupancyState = new OccupancyState();
     
     @PostMapping("/occupancy")
     public OccupancyResponse getOccupancyState(@RequestBody OccupancyRequest data) {
@@ -61,7 +59,11 @@ public class OccupancyController {
         logger.info("Free Premium rooms: " + data.getAvailablePremiumRooms());
         logger.info("Free Economy rooms: " + data.getAvailableEconomyRooms());
 
-        OccupancyState occupancyState = new OccupancyState(mapper.getPayments(),data.getAvailablePremiumRooms(), data.getAvailableEconomyRooms());
+        //OccupancyState occupancyState = new OccupancyState(mapper.getPayments(),data.getAvailablePremiumRooms(), data.getAvailableEconomyRooms());
+        occupancyState.setPaymentList(mapper.getPayments());
+        occupancyState.setAvailableEconomyRooms(data.getAvailableEconomyRooms());
+        occupancyState.setAvailablePremiumRooms(data.getAvailablePremiumRooms());
+        occupancyState.businessLogic();
         //Log Results of Alogrithm
         logger.info("Usage Premium: " + occupancyState.getPremiumRoomOccuiped() + "(EUR " + occupancyState.getPremiumRoomTotalMade() + ")");
         logger.info("Usage Economy: " + occupancyState.getEconomyRoomOccuiped() + "(EUR " + occupancyState.getEconomyRoomTotalMade() + ")");
