@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OccupancyController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+   
     private final Mapper mapper = new Mapper();
     
     @PostMapping("/occupancy")
@@ -61,14 +63,14 @@ public class OccupancyController {
 
         OccupancyState occupancyState = new OccupancyState(mapper.getPayments(),data.getAvailablePremiumRooms(), data.getAvailableEconomyRooms());
         //Log Results of Alogrithm
-        logger.info("Usage Premium: " + occupancyState.getPremiumOccupiedRooms() + "(EUR " + occupancyState.getPremiumTotalPrice() + ")");
-        logger.info("Usage Economy: " + occupancyState.getEconomyOccupiedRooms() + "(EUR " + occupancyState.getEconomyTotalPrice() + ")");
+        logger.info("Usage Premium: " + occupancyState.getPremiumRoomOccuiped() + "(EUR " + occupancyState.getPremiumRoomTotalMade() + ")");
+        logger.info("Usage Economy: " + occupancyState.getEconomyRoomOccuiped() + "(EUR " + occupancyState.getEconomyRoomTotalMade() + ")");
 
         //Set Response values for the request
-        respOccupancy.setPremiumOccupiedRooms(occupancyState.getPremiumOccupiedRooms());
-        respOccupancy.setPremiumTotal(occupancyState.getPremiumTotalPrice());
-        respOccupancy.setEconomyOccuipedRooms(occupancyState.getEconomyOccupiedRooms());
-        respOccupancy.setEconomyTotal(occupancyState.getEconomyTotalPrice());
+        respOccupancy.setPremiumOccupiedRooms(occupancyState.getPremiumRoomOccuiped());
+        respOccupancy.setPremiumTotal(occupancyState.getPremiumRoomTotalMade());
+        respOccupancy.setEconomyOccuipedRooms(occupancyState.getEconomyRoomOccuiped());
+        respOccupancy.setEconomyTotal(occupancyState.getEconomyRoomTotalMade());
 
         return respOccupancy;
     }

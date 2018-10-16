@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 /**
  *
  * @author Adedamola
  */
+@Getter
 public class OccupancyState {
 
     private int economyRoomOccuiped;
@@ -39,7 +41,9 @@ public class OccupancyState {
         List<Integer> sortedPremiumPriceList = priceList.stream().filter(i -> i >= 100).collect(Collectors.toList());
         if (availableEconomyRooms == 0) {
             economyList = new ArrayList<>();
-            premiumList = priceList.stream().limit(availablePremiumRooms).collect(Collectors.toList());
+            premiumList = priceList.stream()
+                    .limit(availablePremiumRooms)
+                    .collect(Collectors.toList());
         } else if (availableEconomyRooms == 1 && availablePremiumRooms > sortedPremiumPriceList.size()) {
             economyList = sortedEconomyPriceList.stream()
                     .limit(availableEconomyRooms + (availablePremiumRooms - sortedPremiumPriceList.size()))
@@ -67,20 +71,20 @@ public class OccupancyState {
 
     }
 
-    public Integer getPremiumOccupiedRooms() {
-        return premiumRoomOccuiped;
-    }
-
-    public Integer getPremiumTotalPrice() {
-        return premiumRoomTotalMade;
-    }
-
-    public Integer getEconomyOccupiedRooms() {
+    public int getEconomyRoomOccuiped() {
         return economyRoomOccuiped;
     }
 
-    public Integer getEconomyTotalPrice() {
+    public int getEconomyRoomTotalMade() {
         return economyRoomTotalMade;
+    }
+
+    public int getPremiumRoomOccuiped() {
+        return premiumRoomOccuiped;
+    }
+
+    public int getPremiumRoomTotalMade() {
+        return premiumRoomTotalMade;
     }
 
 }
