@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  *
@@ -21,13 +22,17 @@ import org.slf4j.LoggerFactory;
 public class Mapper {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private List<Integer> payments;
 
-    public List<Integer> readJson() {
-
-        List<Integer> payments;
+    public Mapper(){
+        readJson();
+    }
+    
+    @Cacheable
+    private List<Integer> readJson() {
+        
         //Read the customer price list from json smarthost_hotel_guests.json 
         ObjectMapper objectMapper = new ObjectMapper();
-
 
         /*        
         You can also use this to connect directly with the Json's URL for price list just uncomment and comment 
@@ -47,5 +52,10 @@ public class Mapper {
         logger.info(payments.toString());
 
         return payments;
+    }
+    
+    
+    public List<Integer> getPayments(){
+        return this.payments;
     }
 }

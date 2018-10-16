@@ -6,6 +6,7 @@
 package com.smarthosting.root.controller;
 
 import com.smarthosting.root.core.OccupancyState;
+import com.smarthosting.root.jsonreader.Mapper;
 import com.smarthosting.root.models.OccupancyRequest;
 import com.smarthosting.root.models.OccupancyResponse;
 import java.io.IOException;
@@ -29,7 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class OccupancyController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    private final Mapper mapper = new Mapper();
+    
     @PostMapping("/occupancy")
     public OccupancyResponse getOccupancyState(@RequestBody OccupancyRequest data) {
 
@@ -57,7 +59,7 @@ public class OccupancyController {
         logger.info("Free Premium rooms: " + data.getAvailablePremiumRooms());
         logger.info("Free Economy rooms: " + data.getAvailableEconomyRooms());
 
-        OccupancyState occupancyState = new OccupancyState(data.getAvailablePremiumRooms(), data.getAvailableEconomyRooms());
+        OccupancyState occupancyState = new OccupancyState(mapper.getPayments(),data.getAvailablePremiumRooms(), data.getAvailableEconomyRooms());
         //Log Results of Alogrithm
         logger.info("Usage Premium: " + occupancyState.getPremiumOccupiedRooms() + "(EUR " + occupancyState.getPremiumTotalPrice() + ")");
         logger.info("Usage Economy: " + occupancyState.getEconomyOccupiedRooms() + "(EUR " + occupancyState.getEconomyTotalPrice() + ")");

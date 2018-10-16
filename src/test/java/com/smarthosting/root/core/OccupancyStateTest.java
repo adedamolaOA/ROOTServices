@@ -29,17 +29,20 @@ public class OccupancyStateTest {
     private int economyRoomTotalMade;
     private int premiumRoomTotalMade;
 
+    private final Mapper mapper = new Mapper();
     public OccupancyStateTest() {
         logger.info("Testing Occupancy Class");
-        logic(7, 1);
+        logic(mapper.getPayments(),7, 1);
     }
 
-    private void logic(int availablePremiumRooms, int availableEconomyRooms) {
+    private void logic(List<Integer> paymentList,int availablePremiumRooms, int availableEconomyRooms) {
         List<Integer> economyList;
         List<Integer> premiumList;
         
         //Get Customer Payment List
-        List<Integer> testArray = getPriceList();
+        List<Integer> testArray = paymentList;
+        testArray.sort(Comparator.naturalOrder());
+        testArray.sort(Comparator.reverseOrder());
 
         List<Integer> sortedEconomyPriceList = testArray.stream().filter(i -> i < 100).collect(Collectors.toList());
         List<Integer> sortedPremiumPriceList = testArray.stream().filter(i -> i >= 100).collect(Collectors.toList());
@@ -73,13 +76,6 @@ public class OccupancyStateTest {
 
     }
 
-    // Retrive Json and sort in desending order
-    private List<Integer> getPriceList() {
-        List<Integer> priceList = new Mapper().readJson();
-        priceList.sort(Comparator.naturalOrder());
-        priceList.sort(Comparator.reverseOrder());
-        return priceList;
-    }
 
     /**
      * Test of getPremiumRoomsTotalPrice method, of class Occupancy.

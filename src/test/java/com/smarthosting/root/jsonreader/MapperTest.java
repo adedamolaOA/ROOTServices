@@ -14,8 +14,9 @@ import static org.junit.Assert.*;
  * @author Adedamola
  */
 public class MapperTest {
-    
+    final private Mapper pfn = new Mapper();
     public MapperTest() {
+        
     }
 
     /**
@@ -27,8 +28,8 @@ public class MapperTest {
      */
     @Test
     public void testReadJson() throws Exception {
-         Mapper pfn = new Mapper();
-        List<Integer> result = pfn.readJson();
+         
+        List<Integer> result = pfn.getPayments();
         Integer[] test = {
             23,
             45,
